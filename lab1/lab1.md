@@ -67,8 +67,6 @@ A passive scan will not actually attack the application, contrary to an active s
 
 > Depending on your Docker setup, you might have to use the root user: -u 0 
 
-> Windows, using a double slash might be needed to make the mount work, //c/Users/...
-
 > stdout will contain a report, so will the mounted directory (passive.html).
 
 **Reflect on the errors seen and on how effective the scan was.**

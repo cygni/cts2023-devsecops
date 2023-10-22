@@ -10,6 +10,8 @@ Most tools will run in Docker, in that case, prepare by pulling the image.
 - Trivy
 - A basic understanding of SQL Injections and JWTs.
 
+**Windows users, use Powershell!** This since Git bash will not always handle paths correctly.
+
 #### Setup - Burp Suite CE
 
 Download Burp Suite from https://portswigger.net/burp/releases/professional-community-2023-10-2-3?requestededition=community&requestedplatform=
