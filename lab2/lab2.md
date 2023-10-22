@@ -1,5 +1,4 @@
-
-# Lab 2 - Static Analysis
+# Lab 2 - Static Analysis (20-30 min)
 
 ## Part 1 - SAST
 
@@ -13,7 +12,7 @@ Let's do a static analysis of the Juice Shop application.
 
 ```git clone https://github.com/juice-shop/juice-shop.git --depth 1```
 
-> Note: Do NOT run npm install. I've tried and it made the scan blow up even when node_modules were ignored...
+> Note: Do NOT run npm install.
 
 **Analyze the Juice Shop application using Bearer**
 
@@ -44,23 +43,19 @@ Use the output of the SAST scan to access the application logs.
 
 What are the implications of leaving such an error unfixed?
 
-------
-
-**Reflect upon the coverage of the SAST test**
-
-Why was this error not caught?
-
 ## Part 2 - Dependency... (hell)
 
 #### Task - Investigate the Juice Shop´s dependencies
 
 **Use Trivy to analyze the Juice Shop Docker image**
 
+Trivy is one of many tools you may use to analyse a Docker image. Run a security scan of the Juice Shop image using:
+
 ```trivy image bkimminich/juice-shop```
 
 or
 
-```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB>:/root/.cache/ aquasec/trivy:0.19.2 aquasec/trivy:0.19.2 bkimminich/juice-shop```
+```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB>:/root/.cache/ -v C:\Users\<INSERT_PATH_TO_LAB>:/tmp/output aquasec/trivy:0.46.0 image --format json --output /tmp/output/vuln.json bkimminich/juice-shop```
 
 **Look through the output from Trivy**
 
@@ -72,7 +67,7 @@ There will definitely be a couple of errors in the dependencies, but let´s hold
 
 or
 
-```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB>:/root/.cache/ aquasec/trivy:0.19.2 aquasec/trivy:0.19.2 image --format cyclonedx --output bom.json bkimminich/juice-shop```
+```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB>:/root/.cache/ -v C:\Users\<INSERT_PATH_TO_LAB>:/tmp/output aquasec/trivy:0.46.0 image --format cyclonedx --output /tmp/output/bom.json bkimminich/juice-shop```
 
 This will create a bom at `bom.json`
 
@@ -97,15 +92,17 @@ Dependency track is an OWASP tool that keeps track of dependencies and vulnerabi
 
 **Import the BOM**
 
-Go to: project (Juice Shop) -> components -> import BOM
+Go to: project (Juice Shop) -> Components -> Upload BOM
 
 Import the BOM into dependency track, this could take a little while. Just ignore any errors as long as you successfully ingested about 1600 components...
+
+> There is a refresh button
 
 **Check if you are targeted by a new vulnerability**
 
 A new security issue has been reported for the *jsonwebtoken* package of version < 9. Check if you are affected!
 
-Go to: components (left menu bar) -> search (jsonwebtoken)
+Go to: Components (left menu bar) -> Search (jsonwebtoken)
 
 **Find the vulnerability**
 
@@ -113,11 +110,13 @@ What is the issue with the 0.1.0 version of the package?
 
 View the 0.1.0 version component and then the vulnerabilities.
 
-**Exploit the vulnerability**
+**Exploit the vulnerability CVE-2022-23540**
 
-*Objective: Authenticate but as the bogus user: ```jwtn3d@juice-sh.op```*
+*Objective: Authenticate in the Juice Shop, but as the bogus user: ```jwtn3d@juice-sh.op``` when calling the API*
 
-In hints, there is a step-by-step guide to follow, but for the more seasoned hacker, try exploiting without any hints.
+In solutions, there is a step-by-step guide to follow as this is a more challenging exploit.
+
+For the more seasoned hacker, try exploiting without the solution.
 
 > *OWASP Top Ten*
 [1 - Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)

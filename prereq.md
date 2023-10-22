@@ -1,10 +1,14 @@
 ## Prerequisites
 
-- Burp Suite CE
-- Bearer SAST
-- Trivvy
+Most tools will run in Docker, in that case, prepare by pulling the image.
+
 - Docker
 - Docker Compose
+- Burp Suite CE
+- Bearer SAST
+- ZAP Docker image
+- Trivy
+- A basic understanding of SQL Injections and JWTs.
 
 #### Setup - Burp Suite CE
 
@@ -18,7 +22,7 @@ There are many paid tools to do SAST, we will use one, quite recently released, 
 
 **Installation**
 
-[Docs - installation](https://aquasecurity.github.io/trivy/v0.18.3/installation/=)
+[Docs - installation](https://docs.bearer.com/reference/installation/)
 
 **Docker**
 
@@ -41,32 +45,26 @@ sudo apt-get update
 sudo apt-get install bearer
 ```
 
-#### Setup - Trivvy
+#### Setup - Trivy
 
-It is recommended to not use Docker when running Trivy. This, since the setup with the Trivy container is, in comparison, more complicated since Docker-in-Docker is needed.
+It is recommended to not use Docker when running Trivy. This, since the setup with the Trivy container is, in comparison, more complicated.
 
 > Windows users, you are required to use Docker in this case.
 
-[Docs - installation](https://aquasecurity.github.io/trivy/v0.18.3/installation)
+[Docs - installation](https://aquasecurity.github.io/trivy/v0.46/getting-started/installation/)
 
 **Docker**
 
-[See docker part in installation docs](https://aquasecurity.github.io/trivy/v0.18.3/installation)
+[See docker part in installation docs](https://aquasecurity.github.io/trivy/v0.46/getting-started/installation/)
 
 **Install script**
 
-```curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.18.3```
+```curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.46.0```
 
 **Homebrew**
 
 ```brew install aquasecurity/trivy/trivy```
 
-**Debian / Ubuntu**
+#### Setup - ZAP scanning
 
-```
-sudo apt-get install wget apt-transport-https gnupg lsb-release
-wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
-sudo apt-get update
-sudo apt-get install trivy
-```
+```docker pull ghcr.io/zaproxy/zaproxy```
