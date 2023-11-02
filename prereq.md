@@ -6,7 +6,7 @@ Most tools will run in Docker, in that case, prepare by pulling the image.
 - Docker Compose
 - Burp Suite CE
 - Bearer SAST
-- ZAP Docker image
+- ZAP
 - Trivy
 - A basic understanding of SQL Injections and JWTs.
 
@@ -14,13 +14,13 @@ Most tools will run in Docker, in that case, prepare by pulling the image.
 
 ------------
 
-#### Setup - Burp Suite CE
+### Setup - Burp Suite CE
 
 Download Burp Suite from https://portswigger.net/burp/releases/professional-community-2023-10-2-3?requestededition=community&requestedplatform=
 
 ------------
 
-#### Setup - Bearer (SAST)
+### Setup - Bearer (SAST)
 
 There are many paid tools to do SAST, we will use one, quite recently released, open source SAST tool, [Bearer](https://docs.bearer.com/)
 
@@ -53,7 +53,7 @@ sudo apt-get install bearer
 
 ------------
 
-#### Setup - Trivy
+### Setup - Trivy
 
 It is recommended to not use Docker when running Trivy. This, since the setup with the Trivy container is, in comparison, more complicated.
 
