@@ -12,9 +12,13 @@ Most tools will run in Docker, in that case, prepare by pulling the image.
 
 **Windows users, use Powershell!** This since Git bash will not always handle paths correctly.
 
+------------
+
 #### Setup - Burp Suite CE
 
 Download Burp Suite from https://portswigger.net/burp/releases/professional-community-2023-10-2-3?requestededition=community&requestedplatform=
+
+------------
 
 #### Setup - Bearer (SAST)
 
@@ -47,6 +51,8 @@ sudo apt-get update
 sudo apt-get install bearer
 ```
 
+------------
+
 #### Setup - Trivy
 
 It is recommended to not use Docker when running Trivy. This, since the setup with the Trivy container is, in comparison, more complicated.
@@ -66,6 +72,8 @@ It is recommended to not use Docker when running Trivy. This, since the setup wi
 **Homebrew**
 
 ```brew install aquasecurity/trivy/trivy```
+
+------------
 
 #### Setup - ZAP scanning
 
