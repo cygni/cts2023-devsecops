@@ -1,28 +1,30 @@
 # Lab 2 - Static Analysis (20-30 min)
 
-## Part 1 - SAST
+## Part 1 - SAST (Static Application Security Testing)
 
-For this lab we will explore tools using static code analysis to find vulnerabilities in code.
+This part of the laboration will utilize static analysis to find vulnerabilities in the source code.
 
 #### SAST - Running static analysis
 
-Let's do a static analysis of the Juice Shop application.
+Bearer is the designated tool to run a SAST scan during this lab.
 
-**Clone the Juice shop repository**
+**Clone the Juice Shop repository**
 
 ```git clone https://github.com/juice-shop/juice-shop.git --depth 1```
 
 > Note: Do NOT run npm install.
 
-**Analyze the Juice Shop application using Bearer**
+**Analyze the Juice Shop source code using Bearer**
 
-Time to start analyzing the application using Bearer. You will have to modify the volume in accordance with your setup.
+Run the following command and modify the path in accordance with your setup.
 
-```docker run --rm -v <INSERT_JUICE_SHOP_PATH>:/tmp/scan bearer/bearer:latest-amd64 scan --output /tmp/scan/bearer.html --format html /tmp/scan```
+```docker run --rm -v <INSERT_JUICE_SHOP_CODE_PATH>:/tmp/scan bearer/bearer:latest-amd64 scan --output /tmp/scan/bearer.html --format html /tmp/scan```
 
 or
 
-```bearer scan --output /tmp/scan/bearer.html --format html /tmp/scan <juice-shop-path>```
+```bearer scan --output ./juice-shop/bearer.html --format html <INSERT_JUICE_SHOP_CODE_PATH>```
+
+The bearer.html report will be available in the juice-shop folder.
 
 **Look at the output**
 
@@ -32,7 +34,7 @@ Is there an overlap with the earlier DAST scans?
 
 #### Task - Access log
 
-*Objective: Access the logs of the application*
+*Objective: Access the logs of the Juice shop*
 
 Use the output of the SAST scan to access the application logs.
 
@@ -49,17 +51,17 @@ What are the implications of leaving such an error unfixed?
 
 **Use Trivy to analyze the Juice Shop Docker image**
 
-Trivy is one of many tools you may use to analyse a Docker image. Run a security scan of the Juice Shop image using:
+Trivy is one of many tools capable to analyze a OCI compliant images. Run a security scan of the Juice Shop image using:
 
-```trivy image bkimminich/juice-shop```
+```trivy image --format json --output ./lab2/vuln.json bkimminich/juice-shop```
 
 or
 
-```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB>:/root/.cache/ -v C:\Users\<INSERT_PATH_TO_LAB>:/tmp/output aquasec/trivy:0.46.0 image --format json --output /tmp/output/vuln.json bkimminich/juice-shop```
+```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB_2>:/root/.cache/ -v C:\Users\<INSERT_PATH_TO_LAB_2>:/tmp/output aquasec/trivy:0.46.0 image --format json --output /tmp/output/vuln.json bkimminich/juice-shop```
 
 **Look through the output from Trivy**
 
-There will definitely be a couple of errors in the dependencies, but let´s hold on further investigation a bit.
+There will definitely be a couple of errors in the dependencies, but let´s hold further investigation a bit.
 
 **Generate a BOM**
 
@@ -67,7 +69,7 @@ There will definitely be a couple of errors in the dependencies, but let´s hold
 
 or
 
-```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB>:/root/.cache/ -v C:\Users\<INSERT_PATH_TO_LAB>:/tmp/output aquasec/trivy:0.46.0 image --format cyclonedx --output /tmp/output/bom.json bkimminich/juice-shop```
+```docker run --rm -v C:\Users\<INSERT_PATH_TO_LAB_2>:/root/.cache/ -v C:\Users\<INSERT_PATH_TO_LAB_2>:/tmp/output aquasec/trivy:0.46.0 image --format cyclonedx --output /tmp/output/bom.json bkimminich/juice-shop```
 
 This will create a bom at `bom.json`
 
@@ -75,11 +77,13 @@ This will create a bom at `bom.json`
 
 Dependency track is an OWASP tool that keeps track of dependencies and vulnerabilities over time. It ingests the dependencies of projects using a BOM.
 
+Start it using:
+
 ```docker-compose -f dependency-track.yml up```
 
-**Login into dependency track**
+**Login to dependency track**
 
-- Visit localhost:8080
+- Visit *localhost:8080*
 - Login using: admin / admin
 - Change the password to something else
 
@@ -92,17 +96,17 @@ Dependency track is an OWASP tool that keeps track of dependencies and vulnerabi
 
 **Import the BOM**
 
-Go to: project (Juice Shop) -> Components -> Upload BOM
+Go to: *Project (Juice Shop) -> Components -> Upload BOM*
 
-Import the BOM into dependency track, this could take a little while. Just ignore any errors as long as you successfully ingested about 1600 components...
+Import the BOM into dependency track; this may take a while. Just ignore any errors as long as about 1600 components were successfully ingested.
 
 > There is a refresh button
 
-**Check if you are targeted by a new vulnerability**
+**A new vulnerability is all over the news, check if you are targeted!!**
 
 A new security issue has been reported for the *jsonwebtoken* package of version < 9. Check if you are affected!
 
-Go to: Components (left menu bar) -> Search (jsonwebtoken)
+Go to: *Components (left menu bar) -> Search (jsonwebtoken)*
 
 **Find the vulnerability**
 
@@ -112,7 +116,7 @@ View the 0.1.0 version component and then the vulnerabilities.
 
 **Exploit the vulnerability CVE-2022-23540**
 
-*Objective: Authenticate in the Juice Shop, but as the bogus user: ```jwtn3d@juice-sh.op``` when calling the API*
+*Objective: Authenticate in the Juice Shop, but as the bogus user: ```jwtn3d@juice-sh.op``` when calling the API.*
 
 In solutions, there is a step-by-step guide to follow as this is a more challenging exploit.
 

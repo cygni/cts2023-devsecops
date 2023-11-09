@@ -1,14 +1,14 @@
 ## Lab 1 - Getting started & DAST (25-30 min)
 
-During this workshop, the [Juice Shop application](https://owasp.org/www-project-juice-shop/) from OWASP will be analyzed and tested in various ways, in order to find and track vulnerabilities.
+During this workshop, the [Juice Shop application](https://owasp.org/www-project-juice-shop/) from OWASP (Open Source Foundation for Application Security) will be analyzed and tested in various ways, in order to find and track vulnerabilities.
 
-For this lab we will explore one of the most used DAST tools, [ZAP](https://www.zaproxy.org/), developed by OWASP. We will also utilize the community edition of Burp Suite.
+The tools used in lab1 will be the popular DAST (Dynamic Application Security Scanning) tool, [OWASP ZAP](https://www.zaproxy.org/) as well as the community edition of Burp Suite.
 
 -------
 
 #### Task - Getting to know the Juice Shop & Burp
 
-The Juice Shop is probably the worlds most stable, but extremely insecure, application. It is developed by OWASP to give developers a chance to test exploiting different security issues and is commonly used in workshops such as this one.
+The Juice Shop is the self-proclaimed - *most modern and sophisticated insecure web application*. It is developed by OWASP to give developers a chance to get hands on experience exploiting different vulnerabilities; it is commonly used in workshops such as this one.
 
 **Start the Juice Shop application**
 
@@ -16,7 +16,7 @@ To begin with, start the Juice Shop using Docker.
 
 ```docker run -d -p 3000:3000 bkimminich/juice-shop```
 
-Leave the app running! Make sure it is accesible on port 3000 of the IP your Docker host is using (usually http://localhost:3000).
+Leave the app running! Make sure it is accessible on port 3000 of the IP your Docker host is using, usually http://localhost:3000.
 
 **Start Burp Suite**
 
@@ -24,28 +24,28 @@ Use a temporary project and the Burp defaults.
 
 **Open the Juice Shop in Burp**
 
-1. Go to proxy > open browser
-2. Open the Juice Shop in the Burp browser (Chromium)
-3. Visit the *HTTP history* tab inside the proxy tab.
-4. Make sure you can see some HTTP data from the Juice Shop.
+1. Select *Proxy tab > Open browser*.
+2. Open the Juice Shop in the Burp browser (Chromium).
+3. Visit the *HTTP history* tab in Burp, it is on the Proxy page.
+4. Make sure some HTTP data from the Juice Shop has been captured.
 
 **Create a Juice Shop account**
 
-Account (top right) -> Login -> Not yet a customer -> Create account
+*Account (top right) -> Login -> Not yet a customer -> Create account*
 
-To not forget the credentials, I suggest you use:
+Do not forget the credentials by e.g. using the ones outlined below:
 
-*email*: admin@test.com *password*: password
+> email: admin@test.com password: password
 
 **Login to the Juice Shop**
 
-Use your credentials and log on to the Juice Shop.
+Use your credentials to log in.
 
 **Add a product to the basket**
 
 **Look at the recorded traffic**
 
-In Burp, go to: Proxy > HTTP history
+In Burp, go to: *Proxy > HTTP history*
 
 As you may have seen, the traffic was recorded by Burp. Burp suite has the capability to intercept and modify request as well as resending request with alternate properties. Such capabilities will be used later on, the objective of this task was to get a feel for the Juice Shop and Burp.
 
@@ -55,7 +55,7 @@ As you may have seen, the traffic was recorded by Burp. Burp suite has the capab
 
 A DAST scan will typically scan a running application for vulnerabilities, contrary to SAST, which statically checks the code.
 
-Burp is able to scan applications for vulnerabilities. This may be done from the UI, but in order to emulate how this could be integrated into a CI/CD pipeline - we'll make use ZAP from OWASP, running in Docker.
+Burp is able to scan applications for vulnerabilities. This may be done from the UI, but in order to emulate how this could be integrated into a CI/CD pipeline - we'll make use of ZAP, running in a container.
 
 **Do a passive security scan**
 
@@ -67,13 +67,15 @@ A passive scan will not actually attack the application, contrary to an active s
 
 > Depending on your Docker setup, you might have to use the root user: -u 0 
 
-> stdout will contain a report, so will the mounted directory (passive.html).
+> stdout will display a report, so will the mounted directory (passive.html).
 
 **Reflect on the errors seen and on how effective the scan was.**
 
+**Briefly, discuss among you, what did you scan?**
+
 **Perform an API scan**
 
-ZAP may also ingest GraphQL, OpenAPI and SOAP specifications and perform a scan of an API. Run the following to scan a very limited part of the Juice Shop API, as defined in the lab1/api.yaml API specification.
+ZAP may also ingest GraphQL, OpenAPI and SOAP specifications to do an API scanning. Run the following to scan a very limited part of the Juice Shop API, as defined in the *lab1/api.yaml* API specification.
 
 ```docker run -v <PATH_TO_LAB_1>:/zap/wrk/:rw -u 0 --network host -t ghcr.io/zaproxy/zaproxy:stable zap-api-scan.py -f openapi -r api.html -t ./api.yml```
 
@@ -81,24 +83,24 @@ ZAP may also ingest GraphQL, OpenAPI and SOAP specifications and perform a scan 
 
 **Investigate the result**
 
-The API scan will output a report `api.html`, investigate the report.
+The API scan will output a report, `api.html`. Investigate the report.
 
 What did ZAP find?
 
-**Task - Exploit SQL Injection vulnerability found in the API**
+**Task - Exploit the SQL Injection vulnerability found in the API**
 
 *Objective: Login as an admin*
 
-http://localhost:3000/#/login
+This lab is not about the vulnerability itself, it is about finding it and understanding the impact. Therefore, hints as well as the full solution is provided in this folder.
 
-You must of course logout first. More hints as well as the full solution is provided in this folder.
-
-As a seasoned hacker this should be a piece of cake, note that the first database user is the admin...
+Two hints to start you of:
+- You must logout first.
+- The first database user is the admin...
 
 >*OWASP Top Ten*
 [3 - Injection](https://owasp.org/Top10/A03_2021-Injection/)
 
-**Go to the score board**
+**Once you are done, go to the score board**
 
 Great work!
 
@@ -120,7 +122,7 @@ Using Burp in this task is highly recommended.
 
 In order to repeat a request:
 
-Right click on it in the HTTP history > Send to repeater > Open repeater and modify > Send
+Right click on it in: *HTTP history > Send to repeater > Open repeater and modify > Send*.
 
 > *OWASP Top Ten*
 > [4 - Insecure Design](https://owasp.org/Top10/A04_2021-Insecure_Design/)
@@ -134,7 +136,7 @@ Right click on it in the HTTP history > Send to repeater > Open repeater and mod
 >*OWASP Top Ten*
 [1 - Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
 
-> Walkthrough is available in the UI on the scoreboard.
+> A walkthrough is available in the UI on the scoreboard.
 
 **Final question**
 
